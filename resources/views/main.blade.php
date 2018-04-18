@@ -1,25 +1,7 @@
 @extends('layout')
 @section('title', 'Главная')
+@section('bcg-title', 'Последние товары')
 @section('content')
-    <div class="main-content">
-        <div class="content-top">
-            <div class="content-top__text">Купить игры неборого без регистрации смс с торента, получить компкт диск, скачать Steam игры после оплаты</div>
-            <div class="slider"><img src="img/slider.png" alt="Image" class="image-main"></div>
-        </div>
-        <div class="content-middle">
-            <div class="content-head__container">
-                <div class="content-head__title-wrap">
-                    <div class="content-head__title-wrap__title bcg-title">Последние товары</div>
-                </div>
-                <div class="content-head__search-block">
-                    <div class="search-container">
-                        <form class="search-container__form" action="/search/" method="GET">
-                            <input type="text" name="search" class="search-container__form__input">
-                            <input type="submit" class="search-container__form__btn" value="search">
-                        </form>
-                    </div>
-                </div>
-            </div>
             <div class="content-main__container">
                 <div class="products-columns">
                     @foreach($books as $book)

@@ -1,28 +1,7 @@
 @extends('layout')
-@section('title', 'Главная')
+@section('title', $book->name . ' в разделе ' . $cat->name)
+@section('bcg-title',  $book->name . ' в разделе ' . $cat->name)
 @section('content')
-    <div class="main-content">
-        <div class="content-top">
-            <div class="content-top__text">Купить игры неборого без регистрации смс с торента, получить компкт диск,
-                скачать Steam игры после оплаты
-            </div>
-            <div class="image-container"><img src="/img/slider.png" alt="Image" class="image-main"></div>
-        </div>
-        <div class="content-middle">
-            <div class="content-head__container">
-                <div class="content-head__title-wrap">
-                    <div class="content-head__title-wrap__title bcg-title">{{$book->name}} в
-                        разделе {{$cat->name}}</div>
-                </div>
-                <div class="content-head__search-block">
-                    <div class="search-container">
-                        <form class="search-container__form">
-                            <input type="text" class="search-container__form__input">
-                            <button class="search-container__form__btn">search</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
             <div class="content-main__container">
                 <div class="product-container">
                     <div class="product-container__image-wrap"><img src="/uploads/{{$book->photo}}"
@@ -43,8 +22,20 @@
                                 {{$book->description}}
                             </p>
                         </div>
-
-
+                        <div>
+                        <form id="form-buy" action="/order/store" method="POST">
+                            {{csrf_field()}}
+                            <input type="hidden" name="book_id" value="{{$book->id}}">
+                            <input type="text" name="name"><br>
+                            @if (Auth::user())
+                                <input type="text" name="email" value="{{ Auth::user()->email}}"><br>
+                            @else
+                                <input type="text" name="email"><br>
+                            @endif
+                            <input id="buy_product" type="submit">
+                        </form>
+                            <div id="outmessage"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -75,6 +66,7 @@
                             </div>
                         </div>
                     @endforeach
+
                 </div>
             </div>
         </div>

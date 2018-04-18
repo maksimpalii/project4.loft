@@ -4,6 +4,7 @@
     <title>ГеймсМаркет - @yield('title')</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="csrf-token" content="{{ Session::token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/css/libs.min.css">
     <link rel="stylesheet" href="/css/main.css">
@@ -16,8 +17,8 @@
         </div>
         <nav class="main-navigation">
             <ul class="nav-list">
-                <li class="nav-list__item"><a href="#" class="nav-list__item__link">Главная</a></li>
-                <li class="nav-list__item"><a href="#" class="nav-list__item__link">Мои заказы</a></li>
+                <li class="nav-list__item"><a href="/" class="nav-list__item__link">Главная</a></li>
+                <li class="nav-list__item"><a href="{{route('order')}}" class="nav-list__item__link">Мои заказы</a></li>
                 <li class="nav-list__item"><a href="#" class="nav-list__item__link">Новости</a></li>
                 <li class="nav-list__item"><a href="{{route('about')}}" class="nav-list__item__link">О компании</a></li>
             </ul>
@@ -37,8 +38,24 @@
                 </div>
             </div>
             <div class="authorization-block">
-                <a href="{{ route('register') }}" class="authorization-block__link">Регистрация</a>
-                <a href="{{ route('login') }}" class="authorization-block__link">Войти</a>
+                @if (Auth::user())
+                    {{ Auth::user()->name}}
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
+
+                    @else
+                    <a href="{{ route('register') }}" class="authorization-block__link">Регистрация</a>
+                    <a href="{{ route('login') }}" class="authorization-block__link">Войти</a>
+                @endif
             </div>
         </div>
     </header>
@@ -49,8 +66,8 @@
                 <div class="sidebar-item__content">
                     <ul class="sidebar-category">
                         @foreach($categories as $cat)
-                            <li class="sidebar-category__item"><a href="/category/{{$cat->id}}"
-                                                                  class="sidebar-category__item__link">{{$cat->name}}</a>
+                            <li class="sidebar-category__item">
+                                <a href="/category/{{$cat->id}}" class="sidebar-category__item__link">{{$cat->name}}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -61,22 +78,22 @@
                 <div class="sidebar-item__content">
                     <div class="sidebar-news">
                         <div class="sidebar-news__item">
-                            <div class="sidebar-news__item__preview-news"><img src="/img/cover/game-2.jpg"
-                                                                               alt="image-new"
-                                                                               class="sidebar-new__item__preview-new__image">
+                            <div class="sidebar-news__item__preview-news">
+                                <img src="/img/cover/game-2.jpg" alt="image-new" class="sidebar-new__item__preview-new__image">
                             </div>
-                            <div class="sidebar-news__item__title-news"><a href="#"
-                                                                           class="sidebar-news__item__title-news__link">О
-                                    новых играх в режиме VR</a></div>
+                            <div class="sidebar-news__item__title-news">
+                                <a href="#" class="sidebar-news__item__title-news__link">
+                                    О новых играх в режиме VR</a>
+                            </div>
                         </div>
                         <div class="sidebar-news__item">
-                            <div class="sidebar-news__item__preview-news"><img src="/img/cover/game-1.jpg"
-                                                                               alt="image-new"
-                                                                               class="sidebar-new__item__preview-new__image">
+                            <div class="sidebar-news__item__preview-news">
+                                <img src="/img/cover/game-1.jpg" alt="image-new" class="sidebar-new__item__preview-new__image">
                             </div>
-                            <div class="sidebar-news__item__title-news"><a href="#"
-                                                                           class="sidebar-news__item__title-news__link">О
-                                    новых играх в режиме VR</a></div>
+                            <div class="sidebar-news__item__title-news">
+                                <a href="#" class="sidebar-news__item__title-news__link">
+                                    О новых играх в режиме VR</a>
+                            </div>
                         </div>
                         <div class="sidebar-news__item">
                             <div class="sidebar-news__item__preview-news">
@@ -84,7 +101,7 @@
                                      class="sidebar-new__item__preview-new__image">
                             </div>
                             <div class="sidebar-news__item__title-news">
-                                <a href="#"  class="sidebar-news__item__title-news__link">О
+                                <a href="#" class="sidebar-news__item__title-news__link">О
                                     новых играх в режиме VR</a></div>
                         </div>
                     </div>
@@ -92,6 +109,25 @@
             </div>
         </div>
         <div class="main-content">
+            <div class="main-content">
+                <div class="content-top">
+                    <div class="content-top__text">Купить игры неборого без регистрации смс с торента, получить компкт диск, скачать Steam игры после оплаты</div>
+                    <div class="slider"><img src="/img/slider.png" alt="Image" class="image-main"></div>
+                </div>
+                <div class="content-middle">
+                    <div class="content-head__container">
+                        <div class="content-head__title-wrap">
+                            <div class="content-head__title-wrap__title bcg-title">@yield('bcg-title')</div>
+                        </div>
+                        <div class="content-head__search-block">
+                            <div class="search-container">
+                                <form class="search-container__form" action="/search" method="GET">
+                                    <input type="text" name="s" class="search-container__form__input"  placeholder="Search..">
+                                    <input type="submit" class="search-container__form__btn" value="search">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
             @yield('content')
         </div>
     </div>
@@ -109,7 +145,7 @@
                         <div class="item-product__thumbnail">
                             <a href="/product/{{$randbook->id}}" class="item-product__thumbnail__link">
                                 <img src="/uploads/{{$randbook->photo}}" alt="Preview-image"
-                                        class="item-product__thumbnail__link__img">
+                                     class="item-product__thumbnail__link__img">
                             </a>
                         </div>
                         <div class="item-product__description">
@@ -150,6 +186,10 @@
         </div>
     </footer>
 </div>
+        <script
+                src="https://code.jquery.com/jquery-2.2.4.min.js"
+                integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+                crossorigin="anonymous"></script>
 <script src="/js/main.js"></script>
 </body>
 </html>
