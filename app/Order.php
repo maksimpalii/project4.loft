@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+
     public function books()
     {
-        return $this->hasOne('App\Book', 'id', 'book_id');
+        return $this->hasOne('App\Book', 'id', 'book_id')->withTrashed();
     }
 }

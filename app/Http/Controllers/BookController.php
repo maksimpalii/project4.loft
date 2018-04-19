@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use App\Categorie;
+use App\Role;
 use Faker\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,12 +46,50 @@ class BookController extends Controller
         return view('admin.category', compact('cats'));
     }
 
+    public function admincreate()
+    {
+
+        $categories = Categorie::pluck('name', 'id')->toArray();
+        return view('admin.bookcreate', compact('categories'));
+
+       // return view('admin.bookcreate');
+    }
+
+    public function adminstore(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|min:5',
+            'description' => 'required',
+            'category_id' => 'required',
+            'price' => 'required',
+            'image' => 'required|image'
+        ]);
+
+        $test = Book::orderBy('id', 'DESC')->first();
+        $book = new Book();
+        $book->name = $request->name;
+        $book->description = $request->description;
+        $book->category_id = $request->category_id;
+        $book->price = $request->price;
+
+
+        $file = $_FILES['image'];
+
+        $img = Image::make($file['tmp_name'])
+            ->resize(600, 400)
+            ->save('./uploads/' . $test->id . '_' . $file['name']);
+        $book->photo = $test->id . '_' . $file['name'];
+        $book->save();
+        return redirect('/admin/book/');
+    }
+
     public function bookedit($book_id)
     {
         $data = [
             'book' => Book::find($book_id)
         ];
-        return view('admin.bookedit', $data);
+        $categories = Categorie::pluck('name', 'id')->toArray();
+        return view('admin.bookedit', $data, compact('categories'));
     }
 
     public function bookupdate($book_id, Request $request)
@@ -68,14 +107,17 @@ class BookController extends Controller
         $book->category_id = $request->category_id;
         $book->price = $request->price;
 
+        if (!empty($_FILES['image']['name'])) {
+            $file = $_FILES['image'];
+            $img = Image::make($file['tmp_name'])
+                ->resize(600, 400)
+                ->save('./uploads/' . $book_id . '_' . $file['name']);
+            $book->photo = $book_id . '_' . $file['name'];
+            $book->save();
+        } else {
+            $book->save();
+        }
 
-        $file = $_FILES['image'];
-
-        $img = Image::make($file['tmp_name'])
-            ->resize(600, 400)
-            ->save('./uploads/' . $book_id . '_' . $file['name']);
-        $book->photo = $book_id . '_' . $file['name'];
-        $book->save();
 
 //        $file = $request->file('image');
 //        $file->move('.', $file->getClientOriginalName());
@@ -89,29 +131,6 @@ class BookController extends Controller
         return redirect('/admin/book/');
     }
 
-    public function populate()
-    {
-        $factory = Factory::create();
-//        $cat = ['Action', 'RPG', 'Квесты', 'Онлайн-игры', 'Стратегии'];
-//        for ($i = 0; $i < 5; $i++) {
-//            $category = new Categorie();
-//            $category->name = $cat[$i];
-//            $category->description = $factory->text(50);
-//            $category->save();
-//        }
-
-        for ($i = 0; $i < 30; $i++) {
-            $post = new Book();
-            $post->name = $factory->jobTitle;
-            $post->description = $factory->text(190);
-            $post->category_id = rand(1, 5);
-            $post->price = rand(100, 800);
-            $factory->image($dir = './uploads', $width = 600, $height = 400);
-            $post->photo = $factory->image($dir, $width = 600, $height = 400, '', false);
-            $post->save();
-        }
-        return 'Populate';
-    }
 
     public function test()
     {

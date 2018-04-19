@@ -21,24 +21,32 @@ Route::get('/', 'BookController@index');
 //    Route::get('/test', 'BookController@test');
 //});
 
-Route::group(['middleware' => 'role:Admin'], function () {
+Route::group(['middleware' => 'role:Admin', 'prefix' => 'admin'], function () {
 
     // Route::get('/test', 'HomeController@index')->name('test');
-    Route::get('/test', 'BookController@test');
+//    Route::get('/test', 'BookController@test');
+    Route::get('book', 'BookController@adminbook')->name('admin_book');
+    Route::get('book/create', 'BookController@admincreate');
+    Route::post('book/create', 'BookController@adminstore');
+    Route::get('book/edit/{book_id}', 'BookController@bookedit');
+    Route::post('book/update/{book_id}', 'BookController@bookupdate');
+    Route::get('book/destroy/{book_id}', 'BookController@bookdestroy');
+    Route::get('order', 'OrderController@adminorder')->name('admin_order');
+    Route::get('category', 'BookController@admincategory')->name('admin_category');
+    Route::get('category/create', 'CategoryController@categorycreate');
+    Route::post('category/create', 'CategoryController@categorystore');
+    Route::get('category/edit/{id}', 'CategoryController@categoryedit');
+    Route::post('category/update/{id}', 'CategoryController@categoryupdate');
+    Route::get('category/destroy/{id}', 'CategoryController@categorydestroy');
+
 
 });
 
 
-Route::get('/populate', 'BookController@populate');
+Route::get('/populate', 'PopulateController@index');
 
-Route::get('/admin/book', 'BookController@adminbook')->name('admin_book');
-Route::get('/admin/order', 'OrderController@adminorder')->name('admin_order');
-Route::get('/admin/category', 'BookController@admincategory')->name('admin_category');
-Route::get('/admin/book/create', 'BookController@admincreate');
-Route::get('/admin/book/edit/{book_id}', 'BookController@bookedit');
-Route::post('/admin/book/update/{book_id}', 'BookController@bookupdate');
-Route::get('/admin/book/destroy/{book_id}', 'BookController@bookdestroy');
 
+Route::get('mail/send', 'MailController@send');
 
 Route::get('/about', 'AboutController@index')->name('about');
 Route::get('/category/{id}', 'CategoryController@index');

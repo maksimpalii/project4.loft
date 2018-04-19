@@ -25,17 +25,17 @@
                             </ul>
                         @endif
 
-                        <form action="/admin/book/update/{{$book->id}}" method="POST" enctype="multipart/form-data">
+                        <form action="/admin/book/create" method="POST" enctype="multipart/form-data">
                             {{csrf_field()}}
-                            <input type="text" name="name" value="{{$book->name}}"><br>
-                            <input type="text" name="description" value="{{$book->description}}"><br>
+                            <input type="text" name="name" value=""><br>
+                            <input type="text" name="description" value=""><br>
                             <div class="form-group">
-                                     {{--{{ Form::select('category_id', array('L' => 'Large', 'S' => 'Small'), $book->category_id)}}--}}
-                                     {{ Form::select('category_id', $categories, $book->category_id)}}
+                                {{--{{ Form::select('category_id', array('L' => 'Large', 'S' => 'Small'), $book->category_id)}}--}}
+                                {{ Form::select('category_id', $categories)}}
                             </div>
-                            <input type="text" name="price" value="{{$book->price}}"><br>
+                            <input type="text" name="price" value=""><br>
                             <input type="file" name="image"><br>
-                            <input type="submit" value="Сохранить">
+                            <input type="submit" value="Добавить">
                         </form>
                     </div>
 

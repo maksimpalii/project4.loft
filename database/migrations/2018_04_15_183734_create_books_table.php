@@ -22,6 +22,7 @@ class CreateBooksTable extends Migration
             $table->string('name'); //varchar 255
             $table->string('description'); //varchar 255
             $table->timestamps(); //created_at&updated_at тип datetime
+            $table->softDeletes();
         });
         Schema::create('books', function (Blueprint $table) {
             $table->increments('id');
@@ -31,6 +32,7 @@ class CreateBooksTable extends Migration
             $table->integer('price'); //varchar 255
             $table->string('photo'); //varchar 255
             $table->timestamps(); //created_at&updated_at тип datetime
+            $table->softDeletes();
         });
         Schema::table('books', function (Blueprint $table) {
             $table->foreign('category_id')

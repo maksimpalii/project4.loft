@@ -13,25 +13,33 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-
-                        You are logged in!
                     </div>
-                    <div class="content-main__container">
-                        <table class="products-columns">
-                            <tr class="products-columns__head">
+                    <div class="container">
+                        <h2>Категории</h2>
+                        <div class="table-responsive">
+                            <a href="/admin/category/create">Создать</a>
+                            <table class="table">
+                                <thead>
+                            <tr>
+                                <th>#</th>
                                 <th>Заголовок</th>
                                 <th>Описание</th>
                                 <th colspan="2">Действия</th>
                             </tr>
+                                </thead>
+                            <tbody>
                             @foreach($cats as $cat)
-                                <tr class="products-columns__item">
-                                    <th class="products-columns__item__title-product">{{$cat->name}}</th>
-                                    <th class="products-columns__item__description"><span class="products-price">{{$cat->description}}</span></th>
+                                <tr>
+                                    <th>{{$cat->id}}</th>
+                                    <th>{{$cat->name}}</th>
+                                    <th>{{$cat->description}}</th>
                                     <th><a href="/admin/category/edit/{{$cat->id}}">Edit</a></th>
                                     <th><a href="/admin/category/destroy/{{$cat->id}}">Delete</a></th>
                                 </tr>
                             @endforeach
-                        </table>
+                            </tbody>
+                            </table>
+                        </div>
                     </div>
 
                     <div class="content-footer__container">
