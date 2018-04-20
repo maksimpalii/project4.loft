@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Dashboard</div>
+                    <div class="card-header">Редкатирование продукта</div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -14,7 +14,6 @@
                             </div>
                         @endif
 
-                        You are logged in!
                     </div>
                     <div class="content-main__container">
                         @if($errors)
@@ -24,19 +23,23 @@
                                 @endforeach
                             </ul>
                         @endif
-
-                        <form action="/admin/book/update/{{$book->id}}" method="POST" enctype="multipart/form-data">
-                            {{csrf_field()}}
-                            <input type="text" name="name" value="{{$book->name}}"><br>
-                            <input type="text" name="description" value="{{$book->description}}"><br>
-                            <div class="form-group">
-                                     {{--{{ Form::select('category_id', array('L' => 'Large', 'S' => 'Small'), $book->category_id)}}--}}
-                                     {{ Form::select('category_id', $categories, $book->category_id)}}
+                            <div class="form-style-5">
+                                <form  action="/admin/book/update/{{$book->id}}" method="POST" enctype="multipart/form-data">
+                                    {{csrf_field()}}
+                                    <fieldset>
+                                        <label for="name">Название:</label>
+                                        <input type="text" id="name" name="name" value="{{$book->name}}">
+                                        <label for="description">Описание:</label>
+                                        <textarea id="description" name="description">{{$book->description}}</textarea>
+                                        <label for="category_id">Категория:</label>
+                                        {{ Form::select('category_id', $categories, $book->category_id)}}
+                                        <label for="price">Цена:</label>
+                                        <input type="text" name="price" id="price" value="{{$book->price}}">
+                                        <input type="file" name="image">
+                                    </fieldset>
+                                    <input type="submit" value="Сохранить" />
+                                </form>
                             </div>
-                            <input type="text" name="price" value="{{$book->price}}"><br>
-                            <input type="file" name="image"><br>
-                            <input type="submit" value="Сохранить">
-                        </form>
                     </div>
 
                 </div>

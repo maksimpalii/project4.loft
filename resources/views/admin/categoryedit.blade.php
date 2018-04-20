@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Dashboard</div>
+                    <div class="card-header">Редактирования Категории</div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -22,15 +22,17 @@
                         </ul>
                     @endif
                     <div class="container">
-                        <h2>Редактирования Категории</h2>
-                        <div class="table-responsive">
-                            <form action="/admin/category/update/{{$cat->id}}" method="POST" enctype="multipart/form-data">
+                        <div class="form-style-5">
+                            <form  action="/admin/category/update/{{$cat->id}}" method="POST" enctype="multipart/form-data">
                                 {{csrf_field()}}
-                                <input type="text" name="name" value="{{$cat->name}}"><br>
-                                <input type="text" name="description" value="{{$cat->description}}"><br>
-                                <input type="submit" value="Сохранить">
+                                <fieldset>
+                                    <label for="name">Название:</label>
+                                    <input type="text" id="name" name="name" value="{{$cat->name}}">
+                                    <label for="description">Описание:</label>
+                                    <textarea id="description" name="description">{{$cat->description}}</textarea>
+                                </fieldset>
+                                <input type="submit" value="Сохранить" />
                             </form>
-
                         </div>
                     </div>
 

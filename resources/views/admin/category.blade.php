@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Dashboard</div>
+                    <div class="card-header">Категории</div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -15,9 +15,8 @@
                         @endif
                     </div>
                     <div class="container">
-                        <h2>Категории</h2>
                         <div class="table-responsive">
-                            <a href="/admin/category/create">Создать</a>
+                            <a href="/admin/category/create" class="btcrea">Создать</a>
                             <table class="table">
                                 <thead>
                             <tr>

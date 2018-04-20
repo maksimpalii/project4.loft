@@ -4,7 +4,6 @@
     <title>ГеймсМаркет - @yield('title')</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="csrf-token" content="{{ Session::token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/libs.min.css">
@@ -71,13 +70,6 @@
             <div class="sidebar-item">
                 <div class="sidebar-item__title">Категории</div>
                 <div class="sidebar-item__content">
-                    <ul class="sidebar-category">
-                        @foreach($categories as $cat)
-                            <li class="sidebar-category__item">
-                                <a href="/category/{{$cat->id}}" class="sidebar-category__item__link">{{$cat->name}}</a>
-                            </li>
-                        @endforeach
-                    </ul>
                 </div>
             </div>
             <div class="sidebar-item">
@@ -143,29 +135,6 @@
             <div class="random-product-container">
                 <div class="random-product-container__head">Случайный товар</div>
                 <div class="random-product-container__content">
-                    <div class="item-product">
-                        <div class="item-product__title-product">
-                            @foreach($randomBooks as $randbook)
-                                <a href="/product/{{$randbook->id}}" class="item-product__title-product__link">
-                                    {{$randbook->name}}</a>
-                        </div>
-                        <div class="item-product__thumbnail">
-                            <a href="/product/{{$randbook->id}}" class="item-product__thumbnail__link">
-                                <img src="/uploads/{{$randbook->photo}}" alt="Preview-image"
-                                     class="item-product__thumbnail__link__img">
-                            </a>
-                        </div>
-                        <div class="item-product__description">
-                            <div class="item-product__description__products-price">
-                                <span class="products-price">{{$randbook->price}} руб</span>
-                            </div>
-                            <div class="item-product__description__btn-block">
-                                <a href="/product/{{$randbook->id}}" class="btn btn-blue">Купить</a>
-                            </div>
-                        </div>
-                        @endforeach
-
-                    </div>
                 </div>
             </div>
             <div class="footer__footer-content__main-content">

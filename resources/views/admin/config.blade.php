@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Создание Категории</div>
+                    <div class="card-header">Настройки</div>
 
                     <div class="card-body">
                         @if (session('status'))
@@ -13,7 +13,9 @@
                                 {{ session('status') }}
                             </div>
                         @endif
+
                     </div>
+
                     @if($errors)
                         <ul>
                             @foreach($errors->all() as $error)
@@ -22,14 +24,16 @@
                         </ul>
                     @endif
                     <div class="container">
-                          <div class="form-style-5">
-                            <form  action="/admin/category/create" method="POST" enctype="multipart/form-data">
+                        <div class="form-style-5">
+                            <form  action="/admin/config" method="POST" enctype="multipart/form-data">
                                 {{csrf_field()}}
                                 <fieldset>
-                                    <label for="name">Название:</label>
-                                    <input type="text" id="name" name="name">
-                                    <label for="description">Описание:</label>
-                                    <textarea id="description" name="description"></textarea>
+                                    <label for="email">Email для уведомлений:</label>
+                                    @if(!empty($opt->value))
+                                    <input type="email" id="email" name="email" value=" {{$opt->value}}">
+                                    @else
+                                        <input type="email" id="email" name="email">
+                                    @endif
                                 </fieldset>
                                 <input type="submit" value="Сохранить" />
                             </form>

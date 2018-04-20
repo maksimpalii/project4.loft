@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use App\Categorie;
+use App\Option;
 use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,7 @@ class OrderController extends Controller
         }
     }
 
-    public function adminorder()
+    public function adminOrder()
     {
         $orders = Order::with('books')->paginate(5);
         return view('admin.order', compact('orders'));
@@ -43,18 +44,22 @@ class OrderController extends Controller
         ]);
 
         if ($v->fails()) {
-//            return 'wrong';
             return $v->errors()->all();
         }
 
+        $order = new Order();
+        $order->name = $this->clearAll($request->name);
+        $order->email = $this->clearAll($request->email);
+        $order->book_id = $this->clearAll($request->book_id);
+        $order->save();
 
-        $post = new Order();
-        $post->name = $request->name;
-        $post->email = $request->email;
-        $post->book_id = $request->book_id;
-        $post->save();
+        $opt = Option::where('name', '=', 'email')->first();
+
+        if (!empty($opt->value)) {
+            $mail = new MailController();
+            $mail->sendOrder($request->name, $request->email, $request->book_id, $order->id);
+        }
 
         echo 'ok';
-        //return redirect('/posts');
     }
 }

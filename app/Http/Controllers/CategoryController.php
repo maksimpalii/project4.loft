@@ -10,19 +10,23 @@ class CategoryController extends Controller
 {
     public function index($id)
     {
-        $cats = new Categorie();
-        $book = new Book();
-        $data = [
-            'cat_this' => Categorie::find($id),
-            'categories' => $cats->catAll(),
-            'randomBooks' => $book->randomBookCount(1)
-        ];
+        if (!empty(Categorie::find($id))) {
+            $cats = new Categorie();
+            $book = new Book();
+            $data = [
+                'cat_this' => Categorie::find($id),
+                'categories' => $cats->catAll(),
+                'randomBooks' => $book->randomBookCount(1)
+            ];
 
-        $books = Book::where('category_id', '=', $id)->paginate(6);
-        return view('category', compact('books'), $data);
+            $books = Book::where('category_id', '=', $id)->paginate(6);
+            return view('category', compact('books'), $data);
+        } else {
+            return redirect('/');
+        }
     }
 
-    public function categoryedit($id)
+    public function adminCategoryEdit($id)
     {
         $data = [
             'cat' => Categorie::find($id)
@@ -30,41 +34,41 @@ class CategoryController extends Controller
         return view('admin.categoryedit', $data);
     }
 
-    public function categoryupdate($id, Request $request)
+    public function adminCategoryUpdate($id, Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|min:5',
+            'name' => 'required|min:3',
             'description' => 'required'
         ]);
         $categ = Categorie::find($id);
-        $categ->name = $request->name;
-        $categ->description = $request->description;
+        $categ->name = $this->clearAll($request->name);
+        $categ->description = $this->clearAll($request->description);
         $categ->save();
 
 
         return redirect('/admin/category/');
     }
 
-    public function categorydestroy($id)
+    public function adminCategoryDestroy($id)
     {
         Categorie::destroy($id);
         return redirect('/admin/category/');
     }
 
-    public function categorycreate()
+    public function adminCategoryCreate()
     {
         return view('admin.categorycreate');
     }
 
-    public function categorystore(Request $request)
+    public function adminCategoryStore(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|min:5',
+            'name' => 'required|min:3',
             'description' => 'required'
         ]);
         $categ = new Categorie();
-        $categ->name = $request->name;
-        $categ->description = $request->description;
+        $categ->name = $this->clearAll($request->name);
+        $categ->description = $this->clearAll($request->description);
         $categ->save();
 
 

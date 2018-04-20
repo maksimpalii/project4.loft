@@ -15,26 +15,35 @@
                                 Цена: <b>{{$book->price}}</b>
                                 руб
                             </div>
-                            <a href="#" class="btn btn-blue">Купить</a>
+                            <a href="#" class="btn btn-blue" id="btn_buy">Купить</a>
                         </div>
                         <div class="product-container__content-text__description">
                             <p>
                                 {{$book->description}}
                             </p>
                         </div>
-                        <div>
-                        <form id="form-buy" action="/order/store" method="POST">
-                            {{csrf_field()}}
-                            <input type="hidden" name="book_id" value="{{$book->id}}">
-                            <input type="text" name="name"><br>
-                            @if (Auth::user())
-                                <input type="text" name="email" value="{{ Auth::user()->email}}"><br>
-                            @else
-                                <input type="text" name="email"><br>
-                            @endif
-                            <input id="buy_product" type="submit">
-                        </form>
-                            <div id="outmessage"></div>
+                        <div id="form_all">
+                        <div id="form_buy">
+                            <div id="close" class="close"></div>
+                            <div class="form-style-5">
+                                <form id="form-buy" action="/order/store" method="POST">
+                                    {{csrf_field()}}
+                                    <input type="hidden" name="book_id" value="{{$book->id}}">
+                                    <fieldset>
+                                        <legend>Оставить заявку</legend>
+                                        <input type="text" name="name" placeholder="Ваше имя *">
+                                        @if (Auth::user())
+                                        <input type="email" name="email" placeholder="Ваш Email *" value="{{ Auth::user()->email}}">
+                                        @else
+                                        <input type="email" name="email" placeholder="Ваш Email *">
+                                        @endif
+                                    </fieldset>
+                                    <input id="buy_product" type="submit" value="Отправить" />
+                                </form>
+                                <div id="outmessage"></div>
+                            </div>
+                            </div>
+                            <div id="_overlay"></div>
                         </div>
                     </div>
                 </div>
@@ -62,7 +71,7 @@
                             </div>
                             <div class="products-columns__item__description">
                                 <span class="products-price">{{$bookView->price}} руб</span>
-                                <a href="#" class="btn btn-blue">Купить</a>
+                                <a href="/product/{{$bookView->id}}" class="btn btn-blue">Купить</a>
                             </div>
                         </div>
                     @endforeach
