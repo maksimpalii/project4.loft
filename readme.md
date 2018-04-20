@@ -9,7 +9,7 @@
 
 ## START
 
-- composer install
-- create .env
-- php artisan migrate
-- web /populate
+- console `composer install`
+- create .env (DB, MAIL)
+- console `php artisan migrate`
+- web htpp://localhost/populate
