@@ -2,6 +2,7 @@ $('#btn_buy').on('click', function (e) {
     e.preventDefault();
     $('#form_all').addClass('active');
     $('#form-buy').removeClass('clear');
+    $('#outmessage').html('');
 });
 $('#close').on('click', function (e) {
     e.preventDefault();
