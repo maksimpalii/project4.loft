@@ -17,7 +17,7 @@ class CreateBooksTable extends Migration
 //            $table->increments('id');
 //            $table->timestamps();
 //        });
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('categorys', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name'); //varchar 255
             $table->string('description'); //varchar 255
@@ -37,7 +37,7 @@ class CreateBooksTable extends Migration
         Schema::table('books', function (Blueprint $table) {
             $table->foreign('category_id')
                 ->references('id')
-                ->on('categories')
+                ->on('categorys')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
@@ -51,6 +51,6 @@ class CreateBooksTable extends Migration
     public function down()
     {
         Schema::dropIfExists('books');
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('categorys');
     }
 }

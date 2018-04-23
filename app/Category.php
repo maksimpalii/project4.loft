@@ -6,18 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class Categorie extends Model
+class Category extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'categorys';
     protected $dates = ['deleted_at'];
 
     public function catAll()
     {
-        $data = Categorie::query()
-            ->orderBy('created_at', 'asc')
-            ->get();
-        return $data;
+        return self::orderBy('created_at')->get();
     }
 
 }

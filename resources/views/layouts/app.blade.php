@@ -29,13 +29,14 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'ГеймсМаркет') }}
                 </a>
+                @if (Auth::user())
                 <div class="col-md-8 nav-admin">
                     <a href="{{route('admin_book')}}" class="navbar item">Товары</a>
                     <a href="{{route('admin_category')}}" class="navbar item">Категории</a>
                     <a href="{{route('admin_order')}}" class="navbar item">Заказы</a>
                     <a href="{{route('admin_config')}}" class="navbar item">Настройки</a>
                 </div>
-
+                @endif
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

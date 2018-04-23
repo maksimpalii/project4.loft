@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\Categorie;
+use App\Category;
 use App\Option;
 use App\Order;
 use Illuminate\Http\Request;
@@ -16,10 +16,10 @@ class OrderController extends Controller
 
     public function index()
     {
-        $cats = new Categorie();
+        $cats = new Category();
         $book = new Book();
         $data = [
-            'categories' => $cats->catAll(),
+            'categorys' => $cats->catAll(),
             'randomBooks' => $book->randomBookCount(1)
         ];
         if (Auth::user()) {

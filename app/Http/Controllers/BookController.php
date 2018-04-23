@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\Categorie;
+use App\Category;
 use App\Option;
 use App\Role;
 use Faker\Factory;
@@ -11,11 +11,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image as Image;
 
 
 class BookController extends Controller
 {
-
 
     public function adminConfig()
     {
@@ -52,18 +53,18 @@ class BookController extends Controller
 
     public function adminCategory()
     {
-        $cats = Categorie::paginate(10);
+        $cats = Category::paginate(10);
         return view('admin.category', compact('cats'));
     }
 
-    public function adminBookCreate()
+    public function create()
     {
 
-        $categories = Categorie::pluck('name', 'id')->toArray();
-        return view('admin.bookcreate', compact('categories'));
+        $categorys = Category::pluck('name', 'id')->toArray();
+        return view('admin.bookcreate', compact('categorys'));
     }
 
-    public function adminBookStore(Request $request)
+    public function store(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|min:3',
@@ -79,23 +80,25 @@ class BookController extends Controller
         $book->description = $this->clearAll($request->description);
         $book->category_id = $this->clearAll($request->category_id);
         $book->price = $this->clearAll($request->price);
-        $file = $_FILES['image'];
-        $fl = new FileController();
-        $book->photo = $fl->upload($file, $lastbook->id);
+        $file = request()->file('image');
+        $img = Image::make($file->getPathname())
+            ->resize(600, 400)
+            ->save('./uploads/' . $lastbook->id . '_' . $file->getClientOriginalName());
+        $book->photo = $lastbook->id . '_' . $file->getClientOriginalName();
         $book->save();
         return redirect('/admin/book/');
     }
 
-    public function adminBookEdit($book_id)
+    public function edit($book_id)
     {
         $data = [
             'book' => Book::find($book_id)
         ];
-        $categories = Categorie::pluck('name', 'id')->toArray();
-        return view('admin.bookedit', $data, compact('categories'));
+        $categorys = Category::pluck('name', 'id')->toArray();
+        return view('admin.bookedit', $data, compact('categorys'));
     }
 
-    public function adminBookUpdate($book_id, Request $request)
+    public function update($book_id, Request $request)
     {
         $this->validate($request, [
             'name' => 'required|min:3',
@@ -110,19 +113,20 @@ class BookController extends Controller
         $book->category_id = $this->clearAll($request->category_id);
         $book->price = $this->clearAll($request->price);
 
-        if (!empty($_FILES['image']['name'])) {
-            $file = $_FILES['image'];
-            $fl = new FileController();
-            $book->photo = $fl->upload($file, $book_id);
+        if (!empty($request->file())) {
+            $file = request()->file('image');
+            $img = Image::make($file->getPathname())
+                ->resize(600, 400)
+                ->save('./uploads/' . $book_id . '_' . $file->getClientOriginalName());
+            $book->photo = $book_id . '_' . $file->getClientOriginalName();
             $book->save();
         } else {
             $book->save();
         }
-
         return redirect('/admin/book/');
     }
 
-    public function adminBookDestroy($book_id)
+    public function destroy($book_id)
     {
         Book::destroy($book_id);
         return redirect('/admin/book/');
@@ -130,10 +134,10 @@ class BookController extends Controller
 
     public function registration()
     {
-        $cats = new Categorie();
+        $cats = new Category();
         $book = new Book();
         $data = [
-            'categories' => $cats->catAll(),
+            'categorys' => $cats->catAll(),
             'randomBooks' => $book->randomBookCount(1)
         ];
         return view('registration', $data);
@@ -141,10 +145,10 @@ class BookController extends Controller
 
     public function index()
     {
-        $cats = new Categorie();
+        $cats = new Category();
         $book = new Book();
         $data = [
-            'categories' => $cats->catAll(),
+            'categorys' => $cats->catAll(),
             'randomBooks' => $book->randomBookCount(1)
         ];
         $books = Book::paginate(6);
@@ -153,30 +157,27 @@ class BookController extends Controller
 
     public function product($id)
     {
-        if (!empty(Book::find($id))) {
-            $cats = new Categorie();
-            $book = new Book();
-            $cat_id = $book->getBookCatId($id);
-            $data = [
-                'cat' => Categorie::find($cat_id),
-                'categories' => $cats->catAll(),
-                'randomBooks' => $book->randomBookCount(1),
-                'booksView' => $book->randomBookCount(3),
-                'book' => Book::find($id)
-            ];
-            return view('product', $data);
-        } else {
-            return redirect('/');
-        }
+        Book::findOrFail($id);
+        $cats = new Category();
+        $book = new Book();
+        $cat_id = Book::find($id)->category_id;
+        $data = [
+            'cat' => Category::find($cat_id),
+            'categorys' => $cats->catAll(),
+            'randomBooks' => $book->randomBookCount(1),
+            'booksView' => $book->randomBookCount(3),
+            'book' => Book::find($id)
+        ];
+        return view('product', $data);
     }
 
     public function search()
     {
         $keyword = Input::get('s');
-        $cats = new Categorie();
+        $cats = new Category();
         $book = new Book();
         $data = [
-            'categories' => $cats->catAll(),
+            'categorys' => $cats->catAll(),
             'randomBooks' => $book->randomBookCount(1),
             'search' => $keyword
         ];

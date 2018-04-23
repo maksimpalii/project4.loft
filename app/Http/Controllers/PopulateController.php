@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Book;
-use App\Categorie;
+use App\Category;
 use App\Role;
 use Faker\Factory;
 
@@ -17,7 +17,7 @@ class PopulateController extends Controller
         $factory = Factory::create();
         $cat = ['Action', 'RPG', 'Квесты', 'Онлайн-игры', 'Стратегии'];
         for ($i = 0; $i < 5; $i++) {
-            $category = new Categorie();
+            $category = new Category();
             $category->name = $cat[$i];
             $category->description = $factory->text(50);
             $category->save();

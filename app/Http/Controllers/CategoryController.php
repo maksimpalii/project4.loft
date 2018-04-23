@@ -3,22 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\Categorie;
+use App\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     public function index($id)
     {
-        if (!empty(Categorie::find($id))) {
-            $cats = new Categorie();
+        if (!empty(Category::find($id))) {
+            $cats = new Category();
             $book = new Book();
             $data = [
-                'cat_this' => Categorie::find($id),
-                'categories' => $cats->catAll(),
+                'cat_this' => Category::find($id),
+                'categorys' => $cats->catAll(),
                 'randomBooks' => $book->randomBookCount(1)
             ];
-
             $books = Book::where('category_id', '=', $id)->paginate(6);
             return view('category', compact('books'), $data);
         } else {
@@ -26,52 +25,48 @@ class CategoryController extends Controller
         }
     }
 
-    public function adminCategoryEdit($id)
+    public function edit($id)
     {
         $data = [
-            'cat' => Categorie::find($id)
+            'cat' => Category::find($id)
         ];
         return view('admin.categoryedit', $data);
     }
 
-    public function adminCategoryUpdate($id, Request $request)
+    public function update($id, Request $request)
     {
         $this->validate($request, [
             'name' => 'required|min:3',
             'description' => 'required'
         ]);
-        $categ = Categorie::find($id);
+        $categ = Category::find($id);
         $categ->name = $this->clearAll($request->name);
         $categ->description = $this->clearAll($request->description);
         $categ->save();
-
-
         return redirect('/admin/category/');
     }
 
-    public function adminCategoryDestroy($id)
+    public function destroy($id)
     {
-        Categorie::destroy($id);
+        Category::destroy($id);
         return redirect('/admin/category/');
     }
 
-    public function adminCategoryCreate()
+    public function create()
     {
         return view('admin.categorycreate');
     }
 
-    public function adminCategoryStore(Request $request)
+    public function store(Request $request)
     {
         $this->validate($request, [
             'name' => 'required|min:3',
             'description' => 'required'
         ]);
-        $categ = new Categorie();
+        $categ = new Category();
         $categ->name = $this->clearAll($request->name);
         $categ->description = $this->clearAll($request->description);
         $categ->save();
-
-
         return redirect('/admin/category/');
     }
 }

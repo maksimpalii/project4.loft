@@ -71,9 +71,4 @@ class User extends Authenticatable
         return false;
     }
 
-    public static function getUserName($user)
-    {
-        return $user->name;
-    }
-
 }

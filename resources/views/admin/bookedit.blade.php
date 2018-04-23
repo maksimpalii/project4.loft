@@ -32,7 +32,7 @@
                                         <label for="description">Описание:</label>
                                         <textarea id="description" name="description">{{$book->description}}</textarea>
                                         <label for="category_id">Категория:</label>
-                                        {{ Form::select('category_id', $categories, $book->category_id)}}
+                                        {{ Form::select('category_id', $categorys, $book->category_id)}}
                                         <label for="price">Цена:</label>
                                         <input type="text" name="price" id="price" value="{{$book->price}}">
                                         <input type="file" name="image">

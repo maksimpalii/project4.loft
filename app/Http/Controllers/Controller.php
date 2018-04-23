@@ -11,9 +11,9 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function clearAll($dataIn, $isArray = false)
+    public function clearAll($dataIn)
     {
-        if ($isArray === false) {
+        if (!is_array($dataIn)) {
             $data_ = strip_tags($dataIn);
             $data = htmlspecialchars($data_, ENT_QUOTES);
         } else {

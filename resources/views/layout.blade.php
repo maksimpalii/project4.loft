@@ -71,7 +71,7 @@
                 <div class="sidebar-item__title">Категории</div>
                 <div class="sidebar-item__content">
                     <ul class="sidebar-category">
-                        @foreach($categories as $cat)
+                        @foreach($categorys as $cat)
                             <li class="sidebar-category__item">
                                 <a href="/category/{{$cat->id}}" class="sidebar-category__item__link">{{$cat->name}}</a>
                             </li>

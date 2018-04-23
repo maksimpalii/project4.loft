@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\Categorie;
+use App\Category;
 use Faker\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,10 +17,10 @@ class AboutController extends Controller
 
     public function index()
     {
-        $cats = new Categorie();
+        $cats = new Category();
         $book = new Book();
         $data = [
-            'categories' => $cats->catAll(),
+            'categorys' => $cats->catAll(),
             'booksView'=> $book->randomBookCount(3),
             'randomBooks' => $book->randomBookCount(1)
         ];
