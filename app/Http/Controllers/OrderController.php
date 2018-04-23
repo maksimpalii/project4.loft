@@ -20,7 +20,7 @@ class OrderController extends Controller
         $book = new Book();
         $data = [
             'categorys' => $cats->catAll(),
-            'randomBooks' => $book->randomBookCount(1)
+            'randomBooks' => $book->getRandomBookCount(1)
         ];
         if (Auth::user()) {
             $orders = Order::with('books')->where('email', Auth::user()->email)->paginate(4);

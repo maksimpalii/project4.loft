@@ -16,7 +16,7 @@ class CategoryController extends Controller
             $data = [
                 'cat_this' => Category::find($id),
                 'categorys' => $cats->catAll(),
-                'randomBooks' => $book->randomBookCount(1)
+                'randomBooks' => $book->getRandomBookCount(1)
             ];
             $books = Book::where('category_id', '=', $id)->paginate(6);
             return view('category', compact('books'), $data);

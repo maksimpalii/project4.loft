@@ -138,7 +138,7 @@ class BookController extends Controller
         $book = new Book();
         $data = [
             'categorys' => $cats->catAll(),
-            'randomBooks' => $book->randomBookCount(1)
+            'randomBooks' => $book->getRandomBookCount(1)
         ];
         return view('registration', $data);
     }
@@ -149,7 +149,7 @@ class BookController extends Controller
         $book = new Book();
         $data = [
             'categorys' => $cats->catAll(),
-            'randomBooks' => $book->randomBookCount(1)
+            'randomBooks' => $book->getRandomBookCount(1)
         ];
         $books = Book::paginate(6);
         return view('main', compact('books'), $data);
@@ -164,8 +164,8 @@ class BookController extends Controller
         $data = [
             'cat' => Category::find($cat_id),
             'categorys' => $cats->catAll(),
-            'randomBooks' => $book->randomBookCount(1),
-            'booksView' => $book->randomBookCount(3),
+            'randomBooks' => $book->getRandomBookCount(1),
+            'booksView' => $book->getRandomBookCount(3),
             'book' => Book::find($id)
         ];
         return view('product', $data);
@@ -178,7 +178,7 @@ class BookController extends Controller
         $book = new Book();
         $data = [
             'categorys' => $cats->catAll(),
-            'randomBooks' => $book->randomBookCount(1),
+            'randomBooks' => $book->getRandomBookCount(1),
             'search' => $keyword
         ];
         $books = Book::where('name', 'like', '%' . $keyword . '%')

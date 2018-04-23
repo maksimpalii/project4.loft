@@ -21,8 +21,8 @@ class AboutController extends Controller
         $book = new Book();
         $data = [
             'categorys' => $cats->catAll(),
-            'booksView'=> $book->randomBookCount(3),
-            'randomBooks' => $book->randomBookCount(1)
+            'booksView'=> $book->getRandomBookCount(3),
+            'randomBooks' => $book->getRandomBookCount(1)
         ];
         return view('about', $data);
     }
